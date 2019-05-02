@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -8,22 +9,14 @@ import (
 func BenchmarkAppend(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		b.StopTimer()
-		slice := createSlice(10)
+		arr1 := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}
+		arr2 := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}
 		b.StartTimer()
-		var result []int
 		for i := 0; i < 10000; i++ {
-			result = append(result, slice...)
+			arr1 = append(arr1, arr2...)
 		}
-		if len(result) != 100000 {
-			b.Fatal()
+		if len(arr1) != 100010 {
+			b.Fatal(fmt.Sprintf("was %d", len(arr1)))
 		}
 	}
-}
-
-func createSlice(size int) []int {
-	s := make([]int, size)
-	for i := 0; i < size; i++ {
-		s[i] = i + 1
-	}
-	return s
 }
